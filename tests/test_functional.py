@@ -1,5 +1,6 @@
 from src.models import Bill, Parameters, TenantSettlement, ApartmentSettlement, Transfer
 from src.manager import Manager
+from src.models import BlacklistedTenant
 
 
 def test_settlement_due_between_tanants_and_apartment():
@@ -99,3 +100,27 @@ def test_validation_transfer_limits():
     assert manager.validate_transfer_amount(15000.0) is False 
     
     assert manager.validate_transfer_amount(-500.0) is False
+
+ 
+
+def test_blacklisted_tenant_model():
+    """Test sprawdza, czy model danych dla czarnej listy istnieje i ma poprawne pola."""
+    tenant = BlacklistedTenant(name="Jan Kowalski", reason="Notoryczny brak opłat")
+    
+    assert tenant.name == "Jan Kowalski"
+    assert tenant.reason == "Notoryczny brak opłat"
+
+def test_is_tenant_blacklisted():
+    """Test sprawdza, czy manager poprawnie weryfikuje obecność na czarnej liście."""
+    manager = Manager(Parameters())
+    
+   
+    manager.blacklist = [
+        BlacklistedTenant(name="Jan Kowalski", reason="Zniszczenie mienia")
+    ]
+    
+    
+    assert manager.is_tenant_blacklisted("Jan Kowalski") is True
+    
+    
+    assert manager.is_tenant_blacklisted("Anna Nowak") is False
