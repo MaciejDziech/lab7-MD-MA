@@ -104,3 +104,8 @@ class TenantSettlement(BaseModel):
     total_due_pln: float
     total_transfers_pln: float = 0.0
     balance_pln: float = 0.0
+
+class BlacklistedTenant:
+    def __init__(self, name: str, reason: str):
+        self.name = name
+        self.reason = reason

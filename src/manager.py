@@ -1,4 +1,4 @@
-from src.models import Apartment, Bill, Parameters, Tenant, TenantSettlement, Transfer, ApartmentSettlement
+from src.models import Apartment, Bill, Parameters, Tenant, TenantSettlement, Transfer, ApartmentSettlement, BlacklistedTenant
 from typing import List, Tuple
 
 class Manager:
@@ -9,6 +9,7 @@ class Manager:
         self.tenants = {}
         self.transfers = []
         self.bills = []
+        self.blacklist = []
        
         self.load_data()
 
@@ -123,3 +124,12 @@ class Manager:
         else:
            
             return abs(amount) <= self.parameters.max_refund_pln
+        
+    def is_tenant_blacklisted(self, name: str) -> bool:
+        """
+        Sprawdza, czy lokator jest na czarnej liście.
+        """
+        for entry in self.blacklist:
+            if entry.name == name:
+                return True
+        return False
