@@ -85,3 +85,17 @@ def test_apartment_has_any_bills():
 
     has_bills = manager.has_any_bills('apart-polanka', 2025, 3)
     assert has_bills == False
+
+def test_validation_transfer_limits():
+    from src.manager import Manager
+    from src.models import Parameters
+    
+    manager = Manager(Parameters())
+    manager.parameters.max_transfer_pln = 10000.0
+    manager.parameters.max_refund_pln = 100.0
+    
+    assert manager.validate_transfer_amount(500.0) is True
+    
+    assert manager.validate_transfer_amount(15000.0) is False 
+    
+    assert manager.validate_transfer_amount(-500.0) is False
