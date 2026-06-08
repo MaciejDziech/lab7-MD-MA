@@ -112,3 +112,14 @@ class Manager:
         if apartment_key not in self.apartments:
             raise ValueError("Apartment key does not exist")
         return any([bill for bill in self.bills if bill.apartment == apartment_key and bill.settlement_year == year and bill.settlement_month == month])
+    
+    def validate_transfer_amount(self, amount: float) -> bool:
+        """
+        Waliduje kwotę przelewu na podstawie ustalonych limitów.
+        Wartości dodatnie traktowane są jako wpłaty, ujemne jako zwroty.
+        """
+        if amount >= 0:
+            return amount <= self.parameters.max_transfer_pln
+        else:
+           
+            return abs(amount) <= self.parameters.max_refund_pln

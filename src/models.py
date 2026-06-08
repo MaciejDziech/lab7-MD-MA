@@ -9,6 +9,8 @@ class Parameters(BaseModel):
     tenants_json_path: str = 'data/tenants.json'
     transfers_json_path: str = 'data/transfers.json'
     bills_json_path: str = 'data/bills.json'
+    max_transfer_pln: float = 10000.0
+    max_refund_pln: float = 100.0
 
 
 class Room(BaseModel):
